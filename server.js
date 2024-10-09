@@ -4,11 +4,16 @@ import path from 'path';
 import logger from './middleware/logger.js';
 import errorHandler from './middleware/error.js';
 import notFoundMiddleware from './middleware/notfound.js';
+import { fileURLToPath } from 'url';
 // naming of the file
 import posts from './routes/posts.js';
 const app = express();
 
 const port = process.env.PORT || 8000;
+
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url); // your file url
+const __dirname = path.dirname(__filename); // your directory name
 
 // Body middleware, boilerplate
 app.use(express.json());
@@ -17,7 +22,7 @@ app.use(logger);
 // Setup express static folder
 // So we dont have to query the html pages every time.
 // but you need to specify the html extension when putting the url path /about.html etc
-//\\ app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes middleware
 app.use('/api/posts', posts)
